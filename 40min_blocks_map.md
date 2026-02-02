@@ -192,26 +192,31 @@ FROM concurrent_capacity
 ```
 5:30am ──────────────────────────────────────────────────────────────── 10:00pm
 
-Block 0:  [5:30──────6:10]
-Block 1:           [6:10──────6:50]  ← 6:10am + 6:30am grouped
-Block 2:                     [6:50──────7:30]  ← 6:50am + 7:10am grouped
-Block 3:                               [7:30──────8:10]  ← 7:30am + 7:50am grouped
-Block 4:                                         [8:10──────8:50]  ← 8:10am + 8:30am grouped
-Block 5:                                                   [8:50──────9:30]  ← 8:50am + 9:10am grouped
-Block 6:                                                             [9:30──────10:10]
-Block 7:                                                                       [10:10──────10:50]
-Block 8:                                                                                 [10:50──────11:30]
-Block 9:                                                                                           [11:30──────12:10]
-Block 10:                                                                                                    [12:10──────12:50]  ← 12:10pm + 12:30pm grouped
-Block 11:                                                                                                              [12:50──────1:30]  ← 12:50pm + 1:10pm grouped
-Block 12:                                                                                                                        [1:30──────2:10]
-Block 13:                                                                                                                                  [2:10──────2:50]
-Block 14:                                                                                                                                            [2:50──────3:30]
-Block 15:                                                                                                                                                      [3:30──────4:10]  ← 3:55pm
-Block 16:                                                                                                                                                                [4:10──────4:50]  ← 4:35pm
-Block 17:                                                                                                                                                                          [4:50──────5:30]
-Block 18:                                                                                                                                                                                    [5:30──────6:10]  ← 5:55pm
-Block 19:                                                                                                                                                                                              [6:10──────6:50]  ← 6:35pm
+STAGGERED CAPACITY APPLIES (Blocks 0-11):
+═══════════════════════════════════════════════════════════════════════════════
+Block 0:  [5:30──────6:10]  ✅ Staggered
+Block 1:           [6:10──────6:50]  ✅ Staggered  ← 6:10am + 6:30am grouped
+Block 2:                     [6:50──────7:30]  ✅ Staggered  ← 6:50am + 7:10am grouped
+Block 3:                               [7:30──────8:10]  ✅ Staggered  ← 7:30am + 7:50am grouped
+Block 4:                                         [8:10──────8:50]  ✅ Staggered  ← 8:10am + 8:30am grouped
+Block 5:                                                   [8:50──────9:30]  ✅ Staggered  ← 8:50am + 9:10am grouped
+Block 6:                                                             [9:30──────10:10]  ✅ Staggered
+Block 7:                                                                       [10:10──────10:50]  ✅ Staggered
+Block 8:                                                                                 [10:50──────11:30]  ✅ Staggered
+Block 9:                                                                                           [11:30──────12:10]  ✅ Staggered
+Block 10:                                                                                                    [12:10──────12:50]  ✅ Staggered  ← 12:10pm + 12:30pm grouped
+Block 11:                                                                                                              [12:50──────1:30]  ✅ Staggered  ← 12:50pm + 1:10pm grouped
+
+FULL MAX CAPACITY (Blocks 12+):
+═══════════════════════════════════════════════════════════════════════════════
+Block 12:                                                                                                                        [1:30──────2:10]  ❌ Full max
+Block 13:                                                                                                                                  [2:10──────2:50]  ❌ Full max
+Block 14:                                                                                                                                            [2:50──────3:30]  ❌ Full max
+Block 15:                                                                                                                                                      [3:30──────4:10]  ❌ Full max  ← 3:55pm
+Block 16:                                                                                                                                                                [4:10──────4:50]  ❌ Full max  ← 4:35pm
+Block 17:                                                                                                                                                                          [4:50──────5:30]  ❌ Full max
+Block 18:                                                                                                                                                                                    [5:30──────6:10]  ❌ Full max  ← 5:55pm
+Block 19:                                                                                                                                                                                              [6:10──────6:50]  ❌ Full max  ← 6:35pm
 ```
 
 ---
