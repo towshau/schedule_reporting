@@ -8,32 +8,34 @@ This document shows how 40-minute blocks starting from **5:30am** map across the
 
 ## Full Day Block Map
 
-| Block # | Block Start | Block End | Duration | Example Classes in This Block |
-|---------|-------------|-----------|----------|-------------------------------|
-| **0** | 5:30 AM | 6:10 AM | 40 min | 5:30am |
-| **1** | 6:10 AM | 6:50 AM | 40 min | 6:10am, 6:30am |
-| **2** | 6:50 AM | 7:30 AM | 40 min | 6:50am, 7:10am |
-| **3** | 7:30 AM | 8:10 AM | 40 min | 7:30am, 7:50am |
-| **4** | 8:10 AM | 8:50 AM | 40 min | 8:10am, 8:30am |
-| **5** | 8:50 AM | 9:30 AM | 40 min | 8:50am, 9:10am |
-| **6** | 9:30 AM | 10:10 AM | 40 min | 9:30am, 10:10am |
-| **7** | 10:10 AM | 10:50 AM | 40 min | 10:10am, 10:50am |
-| **8** | 10:50 AM | 11:30 AM | 40 min | 10:50am, 11:30am |
-| **9** | 11:30 AM | 12:10 PM | 40 min | 11:30am, 11:50am |
-| **10** | 12:10 PM | 12:50 PM | 40 min | 12:10pm, 12:30pm |
-| **11** | 12:50 PM | 1:30 PM | 40 min | 12:50pm, 1:10pm |
-| **12** | 1:30 PM | 2:10 PM | 40 min | 1:30pm, 2:10pm |
-| **13** | 2:10 PM | 2:50 PM | 40 min | 2:10pm |
-| **14** | 2:50 PM | 3:30 PM | 40 min | *(typically no classes)* |
-| **15** | 3:30 PM | 4:10 PM | 40 min | 3:55pm |
-| **16** | 4:10 PM | 4:50 PM | 40 min | 4:35pm |
-| **17** | 4:50 PM | 5:30 PM | 40 min | 5:15pm |
-| **18** | 5:30 PM | 6:10 PM | 40 min | 5:55pm |
-| **19** | 6:10 PM | 6:50 PM | 40 min | 6:35pm |
-| **20** | 6:50 PM | 7:30 PM | 40 min | *(typically no classes)* |
-| **21** | 7:30 PM | 8:10 PM | 40 min | *(typically no classes)* |
-| **22** | 8:10 PM | 8:50 PM | 40 min | *(typically no classes)* |
-| **23** | 8:50 PM | 9:30 PM | 40 min | *(typically no classes)* |
+**Important:** Staggered capacity calculation only applies to **Blocks 0-11** (5:30am - 1:30pm). After 1:30pm, use full maximum capacity (no staggered grouping).
+
+| Block # | Block Start | Block End | Duration | Staggered? | Example Classes in This Block |
+|---------|-------------|-----------|----------|------------|-------------------------------|
+| **0** | 5:30 AM | 6:10 AM | 40 min | ✅ Yes | 5:30am |
+| **1** | 6:10 AM | 6:50 AM | 40 min | ✅ Yes | 6:10am, 6:30am |
+| **2** | 6:50 AM | 7:30 AM | 40 min | ✅ Yes | 6:50am, 7:10am |
+| **3** | 7:30 AM | 8:10 AM | 40 min | ✅ Yes | 7:30am, 7:50am |
+| **4** | 8:10 AM | 8:50 AM | 40 min | ✅ Yes | 8:10am, 8:30am |
+| **5** | 8:50 AM | 9:30 AM | 40 min | ✅ Yes | 8:50am, 9:10am |
+| **6** | 9:30 AM | 10:10 AM | 40 min | ✅ Yes | 9:30am, 10:10am |
+| **7** | 10:10 AM | 10:50 AM | 40 min | ✅ Yes | 10:10am, 10:50am |
+| **8** | 10:50 AM | 11:30 AM | 40 min | ✅ Yes | 10:50am, 11:30am |
+| **9** | 11:30 AM | 12:10 PM | 40 min | ✅ Yes | 11:30am, 11:50am |
+| **10** | 12:10 PM | 12:50 PM | 40 min | ✅ Yes | 12:10pm, 12:30pm |
+| **11** | 12:50 PM | 1:30 PM | 40 min | ✅ Yes | 12:50pm, 1:10pm |
+| **12** | 1:30 PM | 2:10 PM | 40 min | ❌ **No** | 1:30pm, 2:10pm (use full max) |
+| **13** | 2:10 PM | 2:50 PM | 40 min | ❌ **No** | 2:10pm (use full max) |
+| **14** | 2:50 PM | 3:30 PM | 40 min | ❌ **No** | *(typically no classes)* |
+| **15** | 3:30 PM | 4:10 PM | 40 min | ❌ **No** | 3:55pm (use full max) |
+| **16** | 4:10 PM | 4:50 PM | 40 min | ❌ **No** | 4:35pm (use full max) |
+| **17** | 4:50 PM | 5:30 PM | 40 min | ❌ **No** | 5:15pm (use full max) |
+| **18** | 5:30 PM | 6:10 PM | 40 min | ❌ **No** | 5:55pm (use full max) |
+| **19** | 6:10 PM | 6:50 PM | 40 min | ❌ **No** | 6:35pm (use full max) |
+| **20** | 6:50 PM | 7:30 PM | 40 min | ❌ **No** | *(typically no classes)* |
+| **21** | 7:30 PM | 8:10 PM | 40 min | ❌ **No** | *(typically no classes)* |
+| **22** | 8:10 PM | 8:50 PM | 40 min | ❌ **No** | *(typically no classes)* |
+| **23** | 8:50 PM | 9:30 PM | 40 min | ❌ **No** | *(typically no classes)* |
 
 ---
 
@@ -93,7 +95,7 @@ Classes that would be grouped together:
 
 ## SQL Implementation
 
-### Method: Fixed 40-Minute Blocks from 5:30am
+### Method: Fixed 40-Minute Blocks from 5:30am (Blocks 0-11 Only)
 
 ```sql
 WITH time_blocks AS (
@@ -101,14 +103,13 @@ WITH time_blocks AS (
         *,
         -- Calculate which 40-minute block this class falls into
         -- Starting from 5:30am, each block is 40 minutes
+        FLOOR(
+            EXTRACT(EPOCH FROM (session_start - '05:30:00'::time)) / 2400  -- 2400 seconds = 40 minutes
+        )::int as block_number,
         '05:30:00'::time + 
         (FLOOR(
-            EXTRACT(EPOCH FROM (session_start - '05:30:00'::time)) / 2400  -- 2400 seconds = 40 minutes
-        )::int * INTERVAL '40 minutes') as block_start,
-        '05:30:00'::time + 
-        ((FLOOR(
             EXTRACT(EPOCH FROM (session_start - '05:30:00'::time)) / 2400
-        )::int + 1) * INTERVAL '40 minutes') as block_end
+        )::int * INTERVAL '40 minutes') as block_start
     FROM view_data_attendance_26_mvp_csu
     WHERE gym = 'BLIGH'
 ),
@@ -128,20 +129,22 @@ concurrent_capacity AS (
 SELECT 
     *,
     CASE 
-        -- Only adjust if: BLIGH gym, multiple classes in block, and total exceeds max
+        -- Only apply staggered logic to blocks 0-11 (5:30am - 1:30pm)
+        -- Blocks 12+ (after 1:30pm) use full max capacity
         WHEN gym = 'BLIGH' 
+         AND block_number < 12  -- Only blocks 0-11
          AND classes_in_block > 1 
          AND total_block_capacity > max_class_type_capacity THEN
-            -- Proportional allocation
+            -- Proportional allocation (staggered)
             (class_instance_capacity::numeric / total_block_capacity::numeric) * max_class_type_capacity
         ELSE
-            -- Use full max capacity
+            -- Use full max capacity (not staggered, or block 12+)
             max_class_type_capacity
     END as adjusted_max_capacity
 FROM concurrent_capacity
 ```
 
-### Alternative: Simpler Bucket Calculation
+### Alternative: Simpler Bucket Calculation (Blocks 0-11 Only)
 
 ```sql
 -- Simpler approach: Calculate block number, then convert back to time
@@ -169,11 +172,14 @@ concurrent_capacity AS (
 SELECT 
     *,
     CASE 
+        -- Only apply staggered logic to blocks 0-11 (5:30am - 1:30pm)
         WHEN gym = 'BLIGH' 
+         AND block_number < 12  -- Only blocks 0-11
          AND classes_in_block > 1 
          AND total_block_capacity > max_class_type_capacity THEN
             (class_instance_capacity::numeric / total_block_capacity::numeric) * max_class_type_capacity
         ELSE
+            -- Use full max capacity (not staggered, or block 12+)
             max_class_type_capacity
     END as adjusted_max_capacity
 FROM concurrent_capacity
@@ -212,14 +218,26 @@ Block 19:                                                                       
 
 ## Key Points
 
+### ✅ Staggered Capacity Rules
+
+**Blocks 0-11 (5:30am - 1:30pm):**
+- ✅ Apply staggered capacity calculation
+- ✅ Group classes in same block, split proportionally if total exceeds max
+- ✅ Example: 6:10am + 6:30am in Block 1 → split 10 max capacity proportionally
+
+**Blocks 12+ (After 1:30pm):**
+- ❌ **No staggered calculation**
+- ✅ Use full maximum capacity for each class
+- ✅ Example: 3:55pm class → gets full 10 max capacity (no sharing)
+
 ### ✅ Advantages of 40-Minute Blocks
 
-1. **Covers Common Staggered Times**
-   - 6:10am + 6:30am → Same block ✅
-   - 6:50am + 7:10am → Same block ✅
-   - 7:30am + 7:50am → Same block ✅
-   - 8:10am + 8:30am → Same block ✅
-   - 12:10pm + 12:30pm → Same block ✅
+1. **Covers Common Staggered Times (Morning/Afternoon Peak)**
+   - 6:10am + 6:30am → Same block ✅ (Block 1)
+   - 6:50am + 7:10am → Same block ✅ (Block 2)
+   - 7:30am + 7:50am → Same block ✅ (Block 3)
+   - 8:10am + 8:30am → Same block ✅ (Block 4)
+   - 12:10pm + 12:30pm → Same block ✅ (Block 10)
 
 2. **Simple Logic**
    - Easy to calculate which block a class belongs to
@@ -229,6 +247,7 @@ Block 19:                                                                       
 3. **Good Coverage**
    - 40 minutes is long enough to catch staggered classes
    - Not so long that unrelated classes get grouped
+   - Only applies during peak hours (morning/early afternoon)
 
 ### ⚠️ Edge Cases
 
@@ -246,15 +265,15 @@ Block 19:                                                                       
 
 ## Recommendation
 
-**40-minute blocks work well IF:**
-- ✅ Your staggered classes are typically 20-30 minutes apart
-- ✅ Classes don't start right at block boundaries
-- ✅ You want simple, predictable grouping
+**40-minute blocks (Blocks 0-11 only) work well because:**
+- ✅ Covers all morning and early afternoon staggered classes
+- ✅ Evening classes (after 1:30pm) use full max capacity (simpler)
+- ✅ Gaps in evening schedule are large enough that staggered logic isn't needed
+- ✅ Simple, predictable grouping during peak hours
 
-**Consider sliding window IF:**
-- ⚠️ You have classes that start very close together (6:09am + 6:11am)
-- ⚠️ You have classes at block boundaries that should be grouped
-- ⚠️ You need more flexible grouping
+**Implementation:**
+- Apply staggered calculation: **Blocks 0-11** (5:30am - 1:30pm)
+- Use full max capacity: **Blocks 12+** (after 1:30pm)
 
 ---
 
