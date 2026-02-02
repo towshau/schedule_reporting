@@ -90,38 +90,140 @@ Total = 10 spots (matches max) ✅
 └─────────────────────────────────────┘
 ```
 
-### Complete Weekly Example (Using System Config)
+### Complete Weekly Example 1: 6:10am Class (Moderate Attendance)
 
 **Scenario:**
-- Gym: BLIGH
-- Current capacity: 4 spots/day (2 coaches)
-- Adjusted max capacity: 7.5 spots (from staggered calculation)
-- Operational days: 5 (Mon-Fri)
-- Total attendance: 15 people this week
-- System Config:
+- **Time:** 6:10am class at BLIGH gym
+- **Original capacity:** 6 spots/day (3 coaches × 2 spots/coach)
+- **Staggered context:** Shares Block 1 with 6:30am class
+  - 6:10am: 3 coaches → 6 spots original capacity
+  - 6:30am: 1 coach → 2 spots original capacity
+  - Total block capacity: 8 spots
+- **Adjusted max capacity:** 7.5 spots (from staggered calculation: (6/8) × 10)
+- **Operational days:** 5 (Mon-Fri)
+- **Total attendance:** 15 people this week across all 5 days
+- **System Config:**
   - `lc_buffer = 0.9`
   - `avg_perform_consumption = 0.4`
 
 **Step-by-Step:**
 
 ```
-1. Total capacity for week = 4 × 5 = 20 spots
-2. Utilization rate = 15 / 20 = 0.75 (75% full)
-3. Average spots = 20 / 5 = 4.0 spots/day
+1. Total capacity for week = 6 × 5 = 30 spots
+   (Original capacity: 6 spots/day × 5 days)
+
+2. Utilization rate = 15 / 30 = 0.50 (50% full)
+   (15 people attended out of 30 total spots available)
+
+3. Average spots = 30 / 5 = 6.0 spots/day
+   (Average capacity per day)
 
 4. Sale without change:
+   = ((0.9 - 0.50) × 6.0) / 0.4
+   = (0.40 × 6.0) / 0.4
+   = 2.4 / 0.4
+   = 6 members
+   (Can add 6 members using existing 6-spot capacity)
+
+5. Sale add change:
+   = 6 + ((7.5 - 6) × 5 / 0.4)
+   = 6 + (1.5 × 5 / 0.4)
+   = 6 + (7.5 / 0.4)
+   = 6 + 18.75
+   = 24.75 members
+   (Can add 6 at current capacity + 18.75 if expand to staggered max of 7.5)
+```
+
+**Key Points:**
+- Original capacity: **6 spots/day** (3 coaches)
+- Adjusted max (staggered): **7.5 spots/day** (75% of 10 max, shared with 6:30am)
+- The 6:30am class gets **2.5 spots/day** (25% of 10 max)
+- Combined: 7.5 + 2.5 = **10 spots total** (matches BLIGH max)
+
+---
+
+### Complete Weekly Example 2: Nearly Full Staggered Classes
+
+**Scenario:**
+- **Time:** 6:15am and 6:30am classes at BLIGH gym (Block 1)
+- **Original capacities:**
+  - 6:15am: 3 coaches → 6 spots/day
+  - 6:30am: 2 coaches → 4 spots/day
+  - Total block capacity: 10 spots
+- **Adjusted max capacities (staggered):**
+  - 6:15am: (6/10) × 10 = **6.0 spots/day**
+  - 6:30am: (4/10) × 10 = **4.0 spots/day**
+  - Total: 10 spots (matches max)
+- **Attendance (all 5 days):**
+  - 6:15am: 5 people per day (5/6 = 83% full)
+  - 6:30am: 3 people per day (3/4 = 75% full)
+- **Operational days:** 5 (Mon-Fri)
+- **System Config:**
+  - `lc_buffer = 0.9`
+  - `avg_perform_consumption = 0.4`
+
+**6:15am Class Calculation:**
+
+```
+1. Total capacity for week = 6 × 5 = 30 spots
+   (Original capacity: 6 spots/day × 5 days)
+
+2. Total attendance = 5 × 5 = 25 people
+   (5 people per day × 5 days)
+
+3. Utilization rate = 25 / 30 = 0.833 (83.3% full)
+
+4. Average spots = 30 / 5 = 6.0 spots/day
+
+5. Sale without change:
+   = ((0.9 - 0.833) × 6.0) / 0.4
+   = (0.067 × 6.0) / 0.4
+   = 0.402 / 0.4
+   = 1.005 members
+   (Can add ~1 member using existing capacity)
+
+6. Sale add change:
+   = 1.005 + ((6.0 - 6) × 5 / 0.4)
+   = 1.005 + (0 × 5 / 0.4)
+   = 1.005 + 0
+   = 1.005 members
+   (No expansion possible - already at adjusted max of 6.0)
+```
+
+**6:30am Class Calculation:**
+
+```
+1. Total capacity for week = 4 × 5 = 20 spots
+   (Original capacity: 4 spots/day × 5 days)
+
+2. Total attendance = 3 × 5 = 15 people
+   (3 people per day × 5 days)
+
+3. Utilization rate = 15 / 20 = 0.75 (75% full)
+
+4. Average spots = 20 / 5 = 4.0 spots/day
+
+5. Sale without change:
    = ((0.9 - 0.75) × 4.0) / 0.4
    = (0.15 × 4.0) / 0.4
    = 0.6 / 0.4
    = 1.5 members
+   (Can add 1.5 members using existing capacity)
 
-5. Sale add change:
-   = 1.5 + ((7.5 - 4) × 5 / 0.4)
-   = 1.5 + (3.5 × 5 / 0.4)
-   = 1.5 + (17.5 / 0.4)
-   = 1.5 + 43.75
-   = 45.25 members
+6. Sale add change:
+   = 1.5 + ((4.0 - 4) × 5 / 0.4)
+   = 1.5 + (0 × 5 / 0.4)
+   = 1.5 + 0
+   = 1.5 members
+   (No expansion possible - already at adjusted max of 4.0)
 ```
+
+**Key Points:**
+- Both classes are **nearly full** (83% and 75% utilization)
+- Both are already at their **adjusted max capacity** (6.0 and 4.0)
+- Combined: 6.0 + 4.0 = **10 spots total** (matches BLIGH max)
+- **No expansion room** - the staggered system has allocated all 10 spots
+- Can only add members using existing capacity gaps (1-1.5 members each)
 
 ---
 
