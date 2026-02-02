@@ -57,6 +57,9 @@ sale_add_change = sale_without_change + ((max_capacity - current_capacity) × op
 - **Days running:** 5 days (Mon-Fri)
 - **Attendance:** 27 people attended this week
 - **Utilization:** 90% full (27 out of 30 total spots)
+- **System Config Values:**
+  - **lc_buffer:** 0.9 (target utilization from system_config)
+  - **avg_perform_consumption:** 0.4 (average sessions per member per week from system_config)
 
 ### Step-by-Step Calculation
 
@@ -67,23 +70,40 @@ utilization_rate = 27 attendees / 30 total spots = 0.90 (90% full)
 
 #### Step 2: Calculate Sale Without Change
 ```
-sale_without_change = ((0.9 - 0.9) × 6.0) / 0.4
+sale_without_change = ((lc_buffer - utilization_rate) × average_spots) / avg_perform_consumption
+                    = ((0.9 - 0.9) × 6.0) / 0.4
                     = (0.0 × 6.0) / 0.4
                     = 0 members
 ```
+
+**Where the numbers come from:**
+- `lc_buffer = 0.9` (from system_config - target utilization)
+- `utilization_rate = 0.9` (calculated: 27/30)
+- `average_spots = 6.0` (current capacity per day)
+- `avg_perform_consumption = 0.4` (from system_config - average sessions per member)
 
 **Result:** 0 members can be added at current capacity (already at 90% target)
 
 #### Step 3: Calculate Sale Add Change
 ```
-capacity_increase = 8 - 6 = 2 spots per day
+capacity_increase = max_capacity - current_capacity
+                  = 8 - 6 = 2 spots per day
 
-additional_spots_per_week = 2 × 5 days = 10 spots
+additional_spots_per_week = capacity_increase × operational_days
+                          = 2 × 5 days = 10 spots
 
-additional_members = 10 / 0.4 = 25 members
+additional_members = additional_spots_per_week / avg_perform_consumption
+                   = 10 / 0.4 = 25 members
 
-sale_add_change = 0 + 25 = 25 members
+sale_add_change = sale_without_change + additional_members
+                = 0 + 25 = 25 members
 ```
+
+**Where the numbers come from:**
+- `max_capacity = 8` (maximum spots possible for BRIDGE PERFORM)
+- `current_capacity = 6` (current configured spots)
+- `operational_days = 5` (Mon-Fri)
+- `avg_perform_consumption = 0.4` (from system_config)
 
 **Result:** If we expand from 6 to 8 spots per day, we can add **25 new members**
 
@@ -98,6 +118,9 @@ sale_add_change = 0 + 25 = 25 members
 - **Days running:** 5 days (Mon-Fri)
 - **Attendance:** 2 people attended this week
 - **Utilization:** 10% full (2 out of 20 total spots)
+- **System Config Values:**
+  - **lc_buffer:** 0.9 (target utilization from system_config)
+  - **avg_perform_consumption:** 0.4 (average sessions per member per week from system_config)
 
 ### Step-by-Step Calculation
 
@@ -108,24 +131,41 @@ utilization_rate = 2 attendees / 20 total spots = 0.10 (10% full)
 
 #### Step 2: Calculate Sale Without Change
 ```
-sale_without_change = ((0.9 - 0.1) × 4.0) / 0.4
+sale_without_change = ((lc_buffer - utilization_rate) × average_spots) / avg_perform_consumption
+                    = ((0.9 - 0.1) × 4.0) / 0.4
                     = (0.8 × 4.0) / 0.4
                     = 3.2 / 0.4
                     = 8 members
 ```
 
+**Where the numbers come from:**
+- `lc_buffer = 0.9` (from system_config - target utilization)
+- `utilization_rate = 0.1` (calculated: 2/20)
+- `average_spots = 4.0` (current capacity per day)
+- `avg_perform_consumption = 0.4` (from system_config - average sessions per member)
+
 **Result:** 8 members can be added at current capacity before reaching 90% utilization
 
 #### Step 3: Calculate Sale Add Change
 ```
-capacity_increase = 10 - 4 = 6 spots per day
+capacity_increase = max_capacity - current_capacity
+                  = 10 - 4 = 6 spots per day
 
-additional_spots_per_week = 6 × 5 days = 30 spots
+additional_spots_per_week = capacity_increase × operational_days
+                          = 6 × 5 days = 30 spots
 
-additional_members = 30 / 0.4 = 75 members
+additional_members = additional_spots_per_week / avg_perform_consumption
+                   = 30 / 0.4 = 75 members
 
-sale_add_change = 8 + 75 = 83 members
+sale_add_change = sale_without_change + additional_members
+                = 8 + 75 = 83 members
 ```
+
+**Where the numbers come from:**
+- `max_capacity = 10` (maximum spots possible for BLIGH PERFORM)
+- `current_capacity = 4` (current configured spots)
+- `operational_days = 5` (Mon-Fri)
+- `avg_perform_consumption = 0.4` (from system_config)
 
 **Result:** 
 - **8 members** can be added at current capacity (4 spots/day)
