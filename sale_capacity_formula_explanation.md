@@ -1,300 +1,185 @@
 # Sale Capacity Formula Explanation
 
-## Overview
+## What These Formulas Do
 
-The `sale_without_change` and `sale_add_change` formulas calculate how many new members can be added to a class, either:
-- **Without changing capacity** (using existing buffer)
-- **With capacity expansion** (increasing to maximum capacity)
+These formulas answer a simple question: **"How many new members can we add to this class?"**
+
+They calculate this in two scenarios:
+1. **Without changing capacity** - using the space we already have
+2. **With capacity expansion** - if we increase to maximum capacity
 
 ---
 
-## Current Formula (As Implemented)
+## The Formulas
 
-### `sale_without_change`
+### Formula 1: Sale Without Change
+
 ```
 sale_without_change = ((lc_buffer - utilization_rate) × average_spots) / avg_perform_consumption
 ```
 
-**What it means:** How many members can be added using the existing capacity buffer (space between current utilization and target utilization).
+**In plain English:** 
+- How many members can we add using the existing capacity?
+- Uses the gap between current utilization and our target (90%)
 
-### `sale_add_change` (Current Implementation)
-```
-sale_add_change = sale_without_change + max_class_type_capacity
-```
+### Formula 2: Sale Add Change
 
-**Issue:** This adds the full maximum capacity value, which may not be correct if current capacity is already close to max.
-
----
-
-## Formula Options
-
-### Option 1: Add Capacity Increase (Recommended)
 ```
 sale_add_change = sale_without_change + ((max_capacity - current_capacity) × operational_days / avg_perform_consumption)
 ```
 
-**What it means:** Members from buffer + members from capacity expansion.
-
-### Option 2: Calculate from Max Capacity Directly
-```
-sale_add_change = ((lc_buffer × max_capacity × operational_days) - total_attendance) / avg_perform_consumption
-```
-
-**What it means:** Total potential members if we expand to max capacity and fill to target utilization.
-
-### Option 3: Current Formula (May Need Review)
-```
-sale_add_change = sale_without_change + max_class_type_capacity
-```
-
-**What it means:** Members from buffer + maximum capacity value (unclear if this represents members or spots).
+**In plain English:**
+- Members we can add at current capacity **PLUS**
+- Members we can add if we expand capacity to the maximum
 
 ---
 
-## Configuration Values
+## Key Terms Explained Simply
 
-- **`lc_buffer`**: 0.9 (90% target utilization)
-- **`avg_perform_consumption`**: 0.4 (average sessions per member per week)
-- **PERFORM class max capacities:**
+| Term | What It Means | Example |
+|------|---------------|---------|
+| **current_capacity** | Spots configured right now | 4 spots per day |
+| **max_capacity** | Maximum spots possible | 10 spots per day |
+| **utilization_rate** | How full the class is (0.0 to 1.0+) | 0.9 = 90% full |
+| **operational_days** | Days the class runs (Mon-Fri) | 5 days |
+| **avg_perform_consumption** | Average sessions per member per week | 0.4 (members attend ~2.5 times per week) |
+| **lc_buffer** | Target utilization (90%) | 0.9 |
+| **average_spots** | Average spots available per day | 6.0 spots |
+
+---
+
+## Real Example: Full Class
+
+### The Situation
+- **Gym:** BRIDGE
+- **Current capacity:** 6 spots per day
+- **Max capacity:** 8 spots per day
+- **Days running:** 5 days (Mon-Fri)
+- **Attendance:** 27 people attended this week
+- **Utilization:** 90% full (27 out of 30 total spots)
+
+### Step-by-Step Calculation
+
+#### Step 1: Calculate Utilization
+```
+utilization_rate = 27 attendees / 30 total spots = 0.90 (90% full)
+```
+
+#### Step 2: Calculate Sale Without Change
+```
+sale_without_change = ((0.9 - 0.9) × 6.0) / 0.4
+                    = (0.0 × 6.0) / 0.4
+                    = 0 members
+```
+
+**Result:** 0 members can be added at current capacity (already at 90% target)
+
+#### Step 3: Calculate Sale Add Change
+```
+capacity_increase = 8 - 6 = 2 spots per day
+
+additional_spots_per_week = 2 × 5 days = 10 spots
+
+additional_members = 10 / 0.4 = 25 members
+
+sale_add_change = 0 + 25 = 25 members
+```
+
+**Result:** If we expand from 6 to 8 spots per day, we can add **25 new members**
+
+---
+
+## Real Example: Empty Class
+
+### The Situation
+- **Gym:** BLIGH
+- **Current capacity:** 4 spots per day
+- **Max capacity:** 10 spots per day
+- **Days running:** 5 days (Mon-Fri)
+- **Attendance:** 2 people attended this week
+- **Utilization:** 10% full (2 out of 20 total spots)
+
+### Step-by-Step Calculation
+
+#### Step 1: Calculate Utilization
+```
+utilization_rate = 2 attendees / 20 total spots = 0.10 (10% full)
+```
+
+#### Step 2: Calculate Sale Without Change
+```
+sale_without_change = ((0.9 - 0.1) × 4.0) / 0.4
+                    = (0.8 × 4.0) / 0.4
+                    = 3.2 / 0.4
+                    = 8 members
+```
+
+**Result:** 8 members can be added at current capacity before reaching 90% utilization
+
+#### Step 3: Calculate Sale Add Change
+```
+capacity_increase = 10 - 4 = 6 spots per day
+
+additional_spots_per_week = 6 × 5 days = 30 spots
+
+additional_members = 30 / 0.4 = 75 members
+
+sale_add_change = 8 + 75 = 83 members
+```
+
+**Result:** 
+- **8 members** can be added at current capacity (4 spots/day)
+- **75 additional members** if we expand to max capacity (10 spots/day)
+- **Total potential: 83 members**
+
+---
+
+## Quick Reference
+
+### What Each Number Tells You
+
+| Metric | What It Means | When to Use It |
+|--------|---------------|----------------|
+| **sale_without_change** | Members you can add right now | "Can we sell more without hiring more coaches?" |
+| **sale_add_change** | Total members if you expand | "What's the full potential if we max out capacity?" |
+
+### The Math Behind It
+
+**Why divide by 0.4?**
+- Members attend an average of 2.5 sessions per week
+- 1 / 2.5 = 0.4 consumption rate
+- So: 10 spots ÷ 0.4 = 25 members (each member uses ~0.4 spots per week)
+
+**Why multiply by operational_days?**
+- Capacity is per day, but we calculate weekly
+- 2 spots/day × 5 days = 10 spots/week
+
+---
+
+## Configuration Settings
+
+These values are stored in the `system_config` table:
+
+- **lc_buffer:** 0.9 (target 90% utilization)
+- **avg_perform_consumption:** 0.4 (average sessions per member per week)
+- **Max capacities for PERFORM classes:**
   - BLIGH: 10 spots/day
   - BRIDGE: 8 spots/day
   - COLLIN: 6 spots/day
 
 ---
 
-## Example 1: Class That Is Quite Full
+## Summary
 
-### Scenario
-- **Gym**: BRIDGE
-- **Session**: PERFORM - BRG AM at 05:30:00
-- **Current capacity**: 6 spots/day (3 coaches × 2 base capacity)
-- **Max capacity**: 8 spots/day
-- **Operational days**: 5 (Mon-Fri)
-- **Total weekly capacity**: 30 spots (6 × 5)
-- **Total attendance**: 27 attendees
-- **Utilization rate**: 90% (27/30)
+**The formulas answer:**
+- ✅ How many members can we add **without changing anything?**
+- ✅ How many members can we add **if we expand capacity?**
 
-### Calculations
+**The key insight:**
+- `sale_without_change` = use existing space
+- `sale_add_change` = existing space + expansion potential
 
-#### Step 1: Utilization Rate
-```
-utilization_rate = total_attendance / total_capacity
-                 = 27 / 30
-                 = 0.90 (90%)
-```
-
-#### Step 2: Average Spots Per Day
-```
-average_spots = total_capacity / operational_days
-              = 30 / 5
-              = 6.0 spots/day
-```
-
-#### Step 3: Sale Without Change
-```
-sale_without_change = ((lc_buffer - utilization_rate) × average_spots) / avg_perform_consumption
-                    = ((0.9 - 0.9) × 6.0) / 0.4
-                    = (0.0 × 6.0) / 0.4
-                    = 0 / 0.4
-                    = 0 members
-```
-
-**Interpretation:** No members can be added without changing capacity (already at 90% target).
-
-#### Step 4: Sale Add Change (Current Formula)
-```
-sale_add_change = sale_without_change + max_class_type_capacity
-                = 0 + 8
-                = 8 members
-```
-
-**Issue:** This suggests 8 members can be added, but capacity can only increase by 2 spots/day.
-
-#### Step 4a: Sale Add Change (Option 1 - Recommended)
-```
-capacity_increase = max_capacity - current_capacity
-                  = 8 - 6
-                  = 2 spots/day
-
-additional_weekly_spots = capacity_increase × operational_days
-                        = 2 × 5
-                        = 10 spots/week
-
-additional_members = additional_weekly_spots / avg_perform_consumption
-                   = 10 / 0.4
-                   = 25 members
-
-sale_add_change = sale_without_change + additional_members
-                = 0 + 25
-                = 25 members
-```
-
-**Interpretation:** If capacity is expanded from 6 to 8 spots/day, you can add 25 new members.
-
-#### Step 4b: Sale Add Change (Option 2)
-```
-max_weekly_capacity = max_capacity × operational_days
-                    = 8 × 5
-                    = 40 spots/week
-
-target_attendance = max_weekly_capacity × lc_buffer
-                  = 40 × 0.9
-                  = 36 attendees
-
-available_spots = target_attendance - current_attendance
-                = 36 - 27
-                = 9 spots
-
-sale_add_change = available_spots / avg_perform_consumption
-                = 9 / 0.4
-                = 22.5 members
-```
-
-**Interpretation:** If expanded to max capacity and filled to 90% utilization, you can add 22.5 members.
-
----
-
-## Example 2: Class That Is Empty
-
-### Scenario
-- **Gym**: BLIGH
-- **Session**: PERFORM - BLIGH AM at 05:30:00
-- **Current capacity**: 4 spots/day (2 coaches × 2 base capacity)
-- **Max capacity**: 10 spots/day
-- **Operational days**: 5 (Mon-Fri)
-- **Total weekly capacity**: 20 spots (4 × 5)
-- **Total attendance**: 2 attendees
-- **Utilization rate**: 10% (2/20)
-
-### Calculations
-
-#### Step 1: Utilization Rate
-```
-utilization_rate = total_attendance / total_capacity
-                 = 2 / 20
-                 = 0.10 (10%)
-```
-
-#### Step 2: Average Spots Per Day
-```
-average_spots = total_capacity / operational_days
-              = 20 / 5
-              = 4.0 spots/day
-```
-
-#### Step 3: Sale Without Change
-```
-sale_without_change = ((lc_buffer - utilization_rate) × average_spots) / avg_perform_consumption
-                    = ((0.9 - 0.1) × 4.0) / 0.4
-                    = (0.8 × 4.0) / 0.4
-                    = 3.2 / 0.4
-                    = 8 members
-```
-
-**Interpretation:** 8 members can be added at current capacity before reaching 90% utilization.
-
-#### Step 4: Sale Add Change (Current Formula)
-```
-sale_add_change = sale_without_change + max_class_type_capacity
-                = 8 + 10
-                = 18 members
-```
-
-**Issue:** This suggests 18 members total, but doesn't clearly show the breakdown.
-
-#### Step 4a: Sale Add Change (Option 1 - Recommended)
-```
-capacity_increase = max_capacity - current_capacity
-                  = 10 - 4
-                  = 6 spots/day
-
-additional_weekly_spots = capacity_increase × operational_days
-                        = 6 × 5
-                        = 30 spots/week
-
-additional_members = additional_weekly_spots / avg_perform_consumption
-                   = 30 / 0.4
-                   = 75 members
-
-sale_add_change = sale_without_change + additional_members
-                = 8 + 75
-                = 83 members
-```
-
-**Interpretation:** 
-- 8 members can be added at current capacity (4 spots/day)
-- 75 additional members if capacity expands to max (10 spots/day)
-- **Total potential: 83 members**
-
-#### Step 4b: Sale Add Change (Option 2)
-```
-max_weekly_capacity = max_capacity × operational_days
-                    = 10 × 5
-                    = 50 spots/week
-
-target_attendance = max_weekly_capacity × lc_buffer
-                  = 50 × 0.9
-                  = 45 attendees
-
-available_spots = target_attendance - current_attendance
-                = 45 - 2
-                = 43 spots
-
-sale_add_change = available_spots / avg_perform_consumption
-                = 43 / 0.4
-                = 107.5 members
-```
-
-**Interpretation:** If expanded to max capacity (10 spots/day) and filled to 90% utilization, you can add 107.5 members.
-
----
-
-## Comparison Summary
-
-| Scenario | Current Formula | Option 1 (Capacity Increase) | Option 2 (Max Direct) |
-|----------|----------------|------------------------------|----------------------|
-| **Full Class** (90% util) | 8 members | 25 members | 22.5 members |
-| **Empty Class** (10% util) | 18 members | 83 members | 107.5 members |
-
-### Key Differences
-
-1. **Current Formula**: Adds max capacity value directly (unclear if this represents members or spots)
-2. **Option 1**: Calculates additional members from capacity expansion (clearer logic)
-3. **Option 2**: Calculates total potential from max capacity directly (simpler but less granular)
-
----
-
-## Recommendation
-
-**Option 1** is recommended because it:
-- Clearly separates "members at current capacity" vs "members from expansion"
-- Uses the actual capacity increase (max - current), not the full maximum
-- Provides a logical breakdown: `sale_without_change + expansion_members`
-- Makes it clear that you're adding the capacity increase, not the full maximum
-
-### Proposed Formula Change
-
-```sql
-sale_add_change = sale_without_change + 
-                  ((max_class_type_capacity - class_instance_capacity) × operational_days / avg_perform_consumption)
-```
-
-This would change:
-- **Full class example**: 0 + ((8-6)×5/0.4) = 0 + 25 = **25 members**
-- **Empty class example**: 8 + ((10-4)×5/0.4) = 8 + 75 = **83 members**
-
----
-
-## Questions to Consider
-
-1. **What does the current formula intend to represent?**
-   - Is `max_class_type_capacity` meant to represent members or spots?
-   - Should it be the full max or the increase?
-
-2. **What is the business logic?**
-   - Do you want to show: "members at current + members from expansion"?
-   - Or: "total potential if expanded to max"?
-
-3. **Which is more useful for decision-making?**
-   - Option 1 shows incremental value of expansion
-   - Option 2 shows total potential at maximum capacity
+**Remember:**
+- Current capacity = what you have now
+- Max capacity = what you could have
+- The difference = expansion opportunity
